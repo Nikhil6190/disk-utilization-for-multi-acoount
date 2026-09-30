@@ -1,0 +1,17 @@
+- name: Deploy CloudWatch Agent
+  hosts: all
+  become: true
+  vars:
+    ansible_connection: amazon.aws.aws_ssm
+    ansible_aws_ssm_profile: lz-session-b
+    ansible_aws_ssm_region: ap-south-1
+    ansible_aws_ssm_bucket_name: "{{ lookup('ansible.builtin.env', 'ANSIBLE_AWS_SSM_BUCKET_NAME') }}"
+  pre_tasks:
+    - name: Require an S3 bucket for SSM file transfers
+      ansible.builtin.assert:
+        that:
+          - ansible_aws_ssm_bucket_name | length > 0
+        fail_msg: Set ANSIBLE_AWS_SSM_BUCKET_NAME to an existing bucket in ap-south-1.
+  roles:
+    - cloudwatch_agent
+    

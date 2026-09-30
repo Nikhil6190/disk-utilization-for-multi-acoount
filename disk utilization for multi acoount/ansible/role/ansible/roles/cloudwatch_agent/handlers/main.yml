@@ -1,0 +1,11 @@
+- name: configure and restart CloudWatch Agent
+  ansible.builtin.command:
+    argv:
+      - "{{ cw_agent_ctl }}"
+      - -a
+      - fetch-config
+      - -m
+      - ec2
+      - -c
+      - "file:{{ cw_config_file }}"
+      - -s

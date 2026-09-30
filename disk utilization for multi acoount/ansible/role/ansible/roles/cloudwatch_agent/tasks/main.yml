@@ -1,0 +1,33 @@
+- name: Download CloudWatch Agent RPM
+  ansible.builtin.get_url:
+    url: "{{ cw_agent_rpm_url }}"
+    dest: "{{ cw_agent_rpm_path }}"
+    mode: "0644"
+
+- name: Install CloudWatch Agent
+  ansible.builtin.package:
+    name: "{{ cw_agent_rpm_path }}"
+    state: present
+
+- name: Create CloudWatch Agent configuration directory
+  ansible.builtin.file:
+    path: "{{ cw_config_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Deploy CloudWatch Agent configuration
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/../../../shared/cloudwatch-agent-config.json"
+    dest: "{{ cw_config_file }}"
+    owner: root
+    group: root
+    mode: "0644"
+  notify: configure and restart CloudWatch Agent
+
+- name: Enable and start CloudWatch Agent
+  ansible.builtin.service:
+    name: amazon-cloudwatch-agent
+    enabled: true
+    state: started

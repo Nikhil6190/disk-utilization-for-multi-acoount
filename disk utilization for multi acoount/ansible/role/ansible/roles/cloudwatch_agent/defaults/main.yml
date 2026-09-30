@@ -1,0 +1,10 @@
+cw_agent_region: ap-south-1
+cw_agent_rpm_arch: "{{ 'arm64' if ansible_architecture == 'aarch64' else 'amd64' }}"
+cw_agent_rpm_url: "https://amazoncloudwatch-agent.s3.{{ cw_agent_region }}.amazonaws.com/amazon_linux/{{ cw_agent_rpm_arch }}/latest/amazon-cloudwatch-agent.rpm"
+cw_agent_rpm_path: /tmp/amazon-cloudwatch-agent.rpm
+cw_agent_ctl: /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl
+cw_config_dir: /opt/aws/amazon-cloudwatch-agent/etc
+cw_config_file: "{{ cw_config_dir }}/amazon-cloudwatch-agent.json"
+collection_interval_seconds: 300
+monitored_mount_path: "/"
+

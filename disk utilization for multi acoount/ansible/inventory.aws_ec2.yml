@@ -1,0 +1,11 @@
+plugin: amazon.aws.aws_ec2
+regions:
+  - ap-south-1
+profile: lz-session-b
+filters:
+  instance-state-name: running
+  "tag:Monitoring": "Enabled"
+hostnames:
+  - instance-id
+compose:
+  ansible_host: instance_id
